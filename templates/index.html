@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Toxicity Tamer - Upload</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Toxicity Tamer</h1>
+        <p>Upload a CSV file with a <strong>text</strong> column for sentiment analysis.</p>
+        <form action="/analyze" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".csv" required>
+            <button type="submit">Analyze</button>
+        </form>
+    </div>
+</body>
+</html>

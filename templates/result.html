@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Result - Toxicity Tamer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Sentiment Analysis Result</h1>
+
+        <div class="summary">
+            <p><strong>Positive:</strong> {{ pos }}</p>
+            <p><strong>Negative:</strong> {{ neg }}</p>
+            <p><strong>Neutral:</strong> {{ neu }}</p>
+        </div>
+
+        <div class="graph">
+            {{ plot_html|safe }}
+        </div>
+
+        <div class="table-section">
+            <h2>Analyzed Data</h2>
+            {{ table|safe }}
+        </div>
+
+        <div class="back-link">
+            <a href="/">← Analyze another file</a>
+        </div>
+    </div>
+</body>
+</html>

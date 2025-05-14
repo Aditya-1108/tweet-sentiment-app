@@ -1,0 +1,11 @@
+text,cleaned_text,sentiment
+Love this movie! So much fun!,love this movie! so much fun!,Positive
+"Terrible experience at the restaurant today, never coming back.","terrible experience at the restaurant today, never coming back.",Negative
+"Such a bad product, I want a refund.","such a bad product, i want a refund.",Negative
+"The food was amazing, best meal I've had in months.","the food was amazing, best meal i've had in months.",Positive
+"Really enjoyed the game last night, what a thriller!","really enjoyed the game last night, what a thriller!",Positive
+"Awful service, the staff was rude and unhelpful.","awful service, the staff was rude and unhelpful.",Negative
+"Fantastic performance, really impressed!","fantastic performance, really impressed!",Positive
+"Not worth the money, very disappointing.","not worth the money, very disappointing.",Negative
+"Such a beautiful place, I’ll definitely visit again!","such a beautiful place, i’ll definitely visit again!",Positive
+"Complete waste of time, would not recommend.","complete waste of time, would not recommend.",Negative
