@@ -2,31 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Analysis Result - Toxicity Tamer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis Results</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Sentiment Analysis Result</h1>
+    <h1>Sentiment Analysis Results</h1>
 
-        <div class="summary">
-            <p><strong>Positive:</strong> {{ pos }}</p>
-            <p><strong>Negative:</strong> {{ neg }}</p>
-            <p><strong>Neutral:</strong> {{ neu }}</p>
-        </div>
+    <!-- Display Pie Chart -->
+    <h3>Sentiment Distribution (Pie Chart)</h3>
+    <div>{{ pie_chart_html|safe }}</div> <!-- Render pie chart -->
 
-        <div class="graph">
-            {{ plot_html|safe }}
-        </div>
+    <!-- Sentiment Counts -->
+    <h3>Sentiment Counts</h3>
+    <ul>
+        <li>Positive: {{ sentiment_counts['Positive'] }}</li>
+        <li>Negative: {{ sentiment_counts['Negative'] }}</li>
+        <li>Neutral: {{ sentiment_counts['Neutral'] }}</li>
+    </ul>
 
-        <div class="table-section">
-            <h2>Analyzed Data</h2>
-            {{ table|safe }}
-        </div>
+    <!-- Data Preview -->
+    <h3>Data Preview:</h3>
+    <div>{{ table|safe }}</div>
 
-        <div class="back-link">
-            <a href="/">← Analyze another file</a>
-        </div>
+    <!-- Back link -->
+    <div class="back-link">
+        <a href="/">Go Back</a>
     </div>
 </body>
 </html>

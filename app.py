@@ -3,12 +3,15 @@ from flask import Flask, render_template, request
 import pandas as pd
 import re
 from textblob import TextBlob
-import plotly.graph_objs as go
-import plotly.offline as pyo
+import plotly.express as px
+import plotly.io as pio
 
 app = Flask(__name__)
+
+# Set upload folder
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
+# Sentiment analysis function
 def analyze_sentiment(text):
     blob = TextBlob(text)
     polarity = blob.sentiment.polarity
@@ -19,54 +22,49 @@ def analyze_sentiment(text):
     else:
         return "Neutral"
 
+# Home route for the form
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# Route to handle the file upload and analysis
 @app.route('/analyze', methods=['POST'])
 def analyze():
     file = request.files['file']
+    
     if not file:
         return "No file uploaded", 400
 
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
-
+    
+    # Save the file to the uploads folder
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
     file.save(filepath)
 
     try:
+        # Read CSV into pandas
         df = pd.read_csv(filepath)
-
+        
+        # Check if 'text' column exists
         if 'text' not in df.columns:
             return "CSV must have a 'text' column", 400
 
+        # Clean the text and perform sentiment analysis
         df['cleaned_text'] = df['text'].astype(str).str.lower()
         df['sentiment'] = df['cleaned_text'].apply(analyze_sentiment)
-        df.to_csv('result.csv', index=False)
 
-        # Count sentiments
+        # Count the sentiments
         sentiment_counts = df['sentiment'].value_counts()
-        pos_count = sentiment_counts.get("Positive", 0)
-        neg_count = sentiment_counts.get("Negative", 0)
-        neu_count = sentiment_counts.get("Neutral", 0)
 
-        # Plotly bar chart
-        fig = go.Figure(data=[
-            go.Bar(name='Sentiments',
-                   x=['Positive', 'Negative', 'Neutral'],
-                   y=[pos_count, neg_count, neu_count],
-                   marker_color=['green', 'red', 'gray'])
-        ])
-        fig.update_layout(title='Sentiment Distribution',
-                          xaxis_title='Sentiment',
-                          yaxis_title='Count')
-        plot_html = pyo.plot(fig, output_type='div')
+        # Create pie chart with Plotly
+        fig = px.pie(values=sentiment_counts, names=sentiment_counts.index, title='Sentiment Distribution')
+        pie_chart_html = pio.to_html(fig, full_html=False)
 
-        return render_template('result.html',
-                               table=df.to_html(classes='data', header="true"),
-                               pos=pos_count, neg=neg_count, neu=neu_count,
-                               plot_html=plot_html)
+        # Pass data to result page
+        return render_template('result.html', table=df.to_html(classes='data', header="true"), 
+                               sentiment_counts=sentiment_counts.to_dict(), pie_chart_html=pie_chart_html)
+
     except Exception as e:
         return f"Error processing CSV: {str(e)}", 500
 
